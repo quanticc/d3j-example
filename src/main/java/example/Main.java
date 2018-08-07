@@ -1,7 +1,7 @@
 package example;
 
-import discord4j.core.ClientBuilder;
 import discord4j.core.DiscordClient;
+import discord4j.core.DiscordClientBuilder;
 import discord4j.gateway.IdentifyOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +31,12 @@ public class Main {
             shardCount = Integer.parseInt(args[2]);
         }
 
-        IdentifyOptions options = new IdentifyOptions();
-        options.setShardIndex(shardId);
-        options.setShardCount(shardCount);
+        IdentifyOptions options = new IdentifyOptions(shardId, shardCount, null);
 
         try {
             Path path = Paths.get("resume.dat");
             if (Files.isRegularFile(path)
-                    && Files.getLastModifiedTime(path).toInstant().plusSeconds(60).isAfter(Instant.now())) {
+                && Files.getLastModifiedTime(path).toInstant().plusSeconds(60).isAfter(Instant.now())) {
                 for (String line : Files.readAllLines(path)) {
                     String[] tokens = line.split(";", 2);
                     options.setResumeSessionId(tokens[0]);
@@ -58,14 +56,14 @@ public class Main {
                 Integer sequence = options.getResumeSequence();
                 log.debug("Resuming data: {}, {}", sessionId, sequence);
                 Path saved = Files.write(Paths.get("resume.dat"),
-                        Collections.singletonList(sessionId + ";" + sequence));
+                    Collections.singletonList(sessionId + ";" + sequence));
                 log.info("File saved to {}", saved.toAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }));
 
-        DiscordClient client = new ClientBuilder(token)
+        DiscordClient client = new DiscordClientBuilder(token)
                 .setIdentifyOptions(options)
                 .build();
 
