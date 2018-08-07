@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.discord4j.discord4j:discord4j-core:b387f42'
+    compile 'com.discord4j.discord4j:discord4j-core:cc22a37'
     compile "ch.qos.logback:logback-classic:1.3.0-alpha4"
     testCompile 'junit:junit:4.12'
 }
