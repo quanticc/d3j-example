@@ -67,7 +67,7 @@ public class Main {
                 .setIdentifyOptions(options)
                 .build();
 
-        CommandListener commandListener = new CommandListener(client);
+        BlockingEchoListener commandListener = new BlockingEchoListener(client);
         commandListener.configure();
 
         LifecycleListener lifecycleListener = new LifecycleListener(client);
